@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import WorkTimeline from '../components/WorkTimeline.astro';
 import { getCollection } from 'astro:content';
-import { Mail, Linkedin, Github } from 'lucide-react';
+import SocialLinks from '../components/SocialLinks.astro';
 
 const work = await getCollection('work');
 ---
@@ -53,52 +53,7 @@ const work = await getCollection('work');
         </div>
         
         <div class="flex flex-col sm:flex-row gap-4 pt-4">
-          
-          {/* Email */}
-          <a 
-            href="mailto:evgeny.rozanov.pro@gmail.com" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            class="relative group bg-white p-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex items-center justify-center text-black hover:text-[#d946ef]"
-            aria-label="Email Me"
-          >
-            <Mail size={24} strokeWidth={2.5} />
-            <span class="absolute -top-12 left-1/2 -translate-x-1/2 bg-black text-white text-xs font-bold uppercase px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-[2px_2px_0px_0px_rgba(255,255,255,0.5)] z-50">
-              Email Me
-              <span class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black"></span>
-            </span>
-          </a>
-
-          {/* LinkedIn */}
-          <a 
-            href="https://www.linkedin.com/in/evgeny-rozanov-8a327236/" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            class="relative group bg-white p-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex items-center justify-center text-black hover:text-[#d946ef]"
-            aria-label="LinkedIn Profile"
-          >
-            <Linkedin size={24} strokeWidth={2.5} />
-            <span class="absolute -top-12 left-1/2 -translate-x-1/2 bg-black text-white text-xs font-bold uppercase px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-[2px_2px_0px_0px_rgba(255,255,255,0.5)] z-50">
-              LinkedIn Profile
-              <span class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black"></span>
-            </span>
-          </a>
-
-          {/* GitHub */}
-          <a 
-            href="https://github.com/erozanov" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            class="relative group bg-white p-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex items-center justify-center text-black hover:text-[#d946ef]"
-            aria-label="GitHub"
-          >
-            <Github size={24} strokeWidth={2.5} />
-            <span class="absolute -top-12 left-1/2 -translate-x-1/2 bg-black text-white text-xs font-bold uppercase px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-[2px_2px_0px_0px_rgba(255,255,255,0.5)] z-50">
-              GitHub
-              <span class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black"></span>
-            </span>
-          </a>
-          
+          <SocialLinks />
         </div>
       </div>
     </div>

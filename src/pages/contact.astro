@@ -1,0 +1,22 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+---
+
+<Layout title="Evgeny Rozanov — Contact">
+  <div class="min-h-[calc(100vh-theme(space.20)*2)] flex flex-col items-center justify-center p-6 md:p-12 font-mono text-center">
+    
+    <h1 class="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none mb-6 md:mb-8">
+      LET'S<br/>CONNECT.
+    </h1>
+
+    <p class="text-lg md:text-xl opacity-80 max-w-2xl mb-12">
+      Have a project in mind, an interesting idea, or just want to say hello? 
+      You can reach me through these channels.
+    </p>
+
+    <div class="flex flex-wrap justify-center gap-6 md:gap-8">
+      <SocialLinks />
+    </div>
+  </div>
+</Layout>
