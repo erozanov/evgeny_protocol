@@ -1,0 +1,68 @@
+---
+import { getCollection } from 'astro:content';
+
+const workHistory = await getCollection('work');
+// Сортировка по дате начала (сначала новые)
+const sortedWork = workHistory.sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf());
+
+// Функция форматирования даты
+const formatDate = (date) => {
+  return new Date(date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase();
+};
+---
+
+<div class="border-4 border-black bg-white p-6 shadow-brutal font-mono">
+  <h2 class="text-3xl font-black uppercase mb-8 border-b-4 border-black pb-4 flex justify-between items-center">
+    <span>Work Experience</span>
+    <span class="text-sm bg-black text-white px-2 py-1 hidden md:inline-block">PROTOCOL_V.1.0</span>
+  </h2>
+
+  <div class="space-y-0 relative border-l-4 border-black ml-4 md:ml-6 pl-8 py-2">
+    {sortedWork.map((job, index) => {
+      const isActive = !job.data.endDate;
+      return (
+        <div class="relative mb-20 last:mb-0 group pb-12 border-b-2 border-black/5 last:border-b-0">
+          {/* Точка на линии */}
+          <div class={`absolute -left-[46px] top-2 w-6 h-6 border-4 border-black ${isActive ? 'bg-brutal-green animate-pulse' : 'bg-white group-hover:bg-black transition-colors'}`}></div>
+
+          <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4 mb-4">
+            <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight leading-none">{job.data.role}</h3>
+            <span class="text-xl md:text-2xl font-bold text-gray-400">@ <a href={job.data.companyUrl} target="_blank" class="hover:text-black hover:bg-brutal-yellow transition-colors px-1 no-underline">{job.data.company}</a></span>
+          </div>
+
+          <div class="flex items-center gap-4 text-xs font-bold uppercase mb-8">
+            <span class="bg-black text-white px-2 py-1">
+              {formatDate(job.data.startDate)} — {isActive ? 'PRESENT' : formatDate(job.data.endDate)}
+            </span>
+            {isActive && <span class="text-brutal-green animate-pulse">● ACTIVE</span>}
+          </div>
+
+          <p class="text-base leading-relaxed opacity-80 max-w-2xl mb-4">
+            {job.data.description}
+          </p>
+
+          {job.data.achievements && (
+            <ul class="space-y-3 mb-6 border-l-2 border-black/10 pl-4 ml-1">
+              {job.data.achievements.map(achievement => (
+                <li class="flex items-start gap-3 text-sm font-bold opacity-90 leading-snug relative group/item">
+                  <span class="mt-1.5 w-1.5 h-1.5 bg-black flex-shrink-0 group-hover/item:bg-brutal-blue transition-colors"></span>
+                  <span>{achievement}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {job.data.tags && (
+            <div class="flex flex-wrap gap-x-2 gap-y-3 mt-6">
+              {job.data.tags.map(tag => (
+                <span class="text-xs font-bold border border-black px-2 py-1 bg-brutal-yellow text-black hover:bg-black hover:text-white transition-colors cursor-default shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] select-none">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    })}
+  </div>
+</div>

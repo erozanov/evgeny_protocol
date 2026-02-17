@@ -1,0 +1,72 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('garden');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: post,
+  }));
+}
+
+const post = Astro.props;
+const { Content } = await post.render();
+---
+
+<Layout title={post.data.title}>
+  <main class="min-h-screen p-4 md:p-12 font-mono">
+    <div class="max-w-3xl mx-auto bg-white border-4 border-black p-8 shadow-brutal relative">
+      <a href="/" class="absolute -top-6 -left-6 bg-black text-white px-4 py-2 uppercase font-bold border-2 border-white hover:bg-white hover:text-black hover:border-black transition-colors transform hover:-translate-y-1 hover:-translate-x-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
+        &lt;- Back to Garden
+      </a>
+      
+      <article class="prose prose-brutal max-w-none">
+        <h1 class="text-4xl md:text-6xl font-black uppercase mb-4 border-b-4 border-black pb-4">{post.data.title}</h1>
+        {post.data.tags && (
+          <div class="flex gap-2 mb-8 flex-wrap">
+            {post.data.tags.map((tag) => (
+              <span class="bg-black text-white px-2 py-1 text-xs uppercase font-bold">#{tag}</span>
+            ))}
+          </div>
+        )}
+        <div class="content">
+          <Content />
+        </div>
+      </article>
+    </div>
+  </main>
+</Layout>
+
+<style is:global>
+  /* Obsidian Callout Styles */
+  .callout {
+    @apply border-l-4 border-black bg-gray-100 p-4 my-4;
+  }
+  .callout-title {
+    @apply font-bold uppercase mb-2 flex items-center gap-2;
+  }
+  
+  /* Markdown Styles */
+  .content h1, .content h2, .content h3 {
+    @apply font-bold uppercase mt-8 mb-4;
+  }
+  .content p {
+    @apply mb-4 leading-relaxed;
+  }
+  .content ul {
+    @apply list-disc list-inside mb-4;
+  }
+  .content a {
+    @apply underline decoration-2 decoration-brutal-blue hover:text-brutal-blue transition-colors font-bold;
+  }
+  .content blockquote {
+    @apply border-l-4 border-black pl-4 italic bg-yellow-100 p-2 my-4;
+  }
+  .content code {
+    @apply bg-gray-200 px-1 font-mono text-sm border border-black;
+  }
+  .content pre {
+    @apply bg-black text-white p-4 border-2 border-gray-500 overflow-x-auto my-4 shadow-brutal-sm;
+  }
+</style>

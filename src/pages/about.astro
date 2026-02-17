@@ -1,0 +1,125 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PortraitCycler from '../components/PortraitCycler.tsx';
+import WorkTimeline from '../components/WorkTimeline.astro';
+import { getCollection } from 'astro:content';
+
+const work = await getCollection('work');
+---
+
+<Layout title="Evgeny Rozanov — Blockchain Architect & CTO">
+  <div class="max-w-6xl mx-auto p-6 md:p-12 font-mono space-y-20">
+    
+    {/* Секция 1: Профиль */}
+    <div class="grid md:grid-cols-[400px_1fr] gap-12 items-start border-b-4 border-black pb-16">
+      
+      {/* Фотография: Строгая, крупная */}
+      <div class="w-full relative group">
+        <div class="absolute inset-0 bg-black translate-x-2 translate-y-2 group-hover:translate-x-4 group-hover:translate-y-4 transition-transform duration-300"></div>
+        <div class="relative border-4 border-black bg-white z-10">
+          <PortraitCycler
+            client:load
+            className="aspect-[3/4] w-full min-h-[300px] border-b-4 border-black"
+            images={[
+              'https://picsum.photos/600/800?grayscale&random=1',
+              'https://picsum.photos/600/800?grayscale&random=2',
+              'https://picsum.photos/600/800?grayscale&random=3',
+              'https://picsum.photos/600/800?grayscale&random=4',
+              'https://picsum.photos/600/800?grayscale&random=5',
+              'https://picsum.photos/600/800?grayscale&random=6'
+            ]}
+          />
+          <div class="p-2 bg-white text-center font-bold uppercase text-sm tracking-widest">
+            FIG. 01: E. ROZANOV
+          </div>
+        </div>
+      </div>
+      
+      {/* Текстовое досье */}
+      <div class="space-y-8">
+        <div>
+          <div class="inline-block bg-black text-white px-3 py-1 text-sm font-bold uppercase mb-4 tracking-wider">
+            PROFILE RECORD
+          </div>
+          <h1 class="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.9]">
+            EVGENY<br/>ROZANOV
+          </h1>
+        </div>
+
+        <div class="border-l-8 border-black pl-8 py-2 space-y-6">
+          <p class="text-2xl font-bold uppercase leading-tight">
+            Software Engineer /<br/>Web3 / Tech Lead
+          </p>
+          <p class="text-lg opacity-80 leading-relaxed max-w-2xl">
+            12+ years of software engineering experience. <br/>
+            3+ years specialized in Blockchain, Web3, DeFi, and Liquid Staking solutions.
+          </p>
+          <p class="text-lg opacity-80 leading-relaxed max-w-2xl">
+            As a <span class="font-bold">Technical Project Manager</span> and CTO at Accumulated Finance, I build scalable platform architectures, lead development teams, and bridge the gap between complex engineering and product goals.
+          </p>
+        </div>
+        
+        <div class="flex flex-col sm:flex-row gap-4 pt-4">
+          <a href="mailto:evgeny.rozanov.pro@gmail.com" class="bg-black text-white px-10 py-4 text-lg font-bold uppercase hover:bg-brutal-blue hover:text-white border-4 border-black transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 text-center">
+            Contact Me
+          </a>
+          <a href="https://www.linkedin.com/in/evgeny-rozanov-8a327236/" target="_blank" class="px-10 py-4 text-lg font-bold uppercase border-4 border-black hover:bg-black hover:text-white transition-all bg-white hover:translate-x-1 hover:translate-y-1 shadow-[6px_6px_0px_0px_rgba(0,0,0,0)] hover:shadow-none text-center">
+            LinkedIn Profile
+          </a>
+        </div>
+      </div>
+    </div>
+
+    {/* Секция 1.5: Key Achievements */}
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="border-4 border-black bg-brutal-red p-6 shadow-brutal text-white flex flex-col justify-between">
+        <h3 class="text-sm font-bold uppercase mb-4 opacity-80">Accumulated Finance</h3>
+        <div>
+          <span class="text-5xl font-black leading-none">$5M+</span>
+          <p class="text-xl font-bold uppercase mt-2">Peak TVL Achieved</p>
+        </div>
+      </div>
+      
+      <div class="border-4 border-black bg-white p-6 shadow-brutal flex flex-col justify-between">
+        <h3 class="text-sm font-bold uppercase mb-4 text-gray-500">Experience</h3>
+        <div>
+          <span class="text-5xl font-black leading-none">12+</span>
+          <p class="text-xl font-bold uppercase mt-2">Years in Software</p>
+        </div>
+      </div>
+
+      <div class="border-4 border-black bg-brutal-blue p-6 shadow-brutal text-white flex flex-col justify-between">
+        <h3 class="text-sm font-bold uppercase mb-4 opacity-80">Development</h3>
+        <div>
+          <span class="text-5xl font-black leading-none">Web3</span>
+          <p class="text-xl font-bold uppercase mt-2">Core Specialization</p>
+        </div>
+      </div>
+    </div>
+
+    {/* Секция 2: Послужной список */}
+    <WorkTimeline />
+
+    {/* Секция 3: Навыки (Теги) */}
+    <div class="border-4 border-black bg-brutal-yellow p-8 md:p-12 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] relative overflow-hidden">
+      <div class="absolute top-0 right-0 p-4 opacity-10 text-[10rem] font-black leading-none pointer-events-none select-none">Stack</div>
+      <h2 class="text-4xl font-black uppercase mb-8 border-b-4 border-black pb-4 relative z-10 inline-block bg-brutal-yellow pr-8">
+        Technical Stack_
+      </h2>
+      <div class="flex flex-wrap gap-3 font-bold uppercase relative z-10 text-lg">
+        {[
+          'Blockchain', 'Web3', 'DeFi', 'Liquid Staking', 
+          'Ethereum', 'Solidity', 'Smart Contracts', 'Gnosis Safe',
+          'Java', 'Spring Boot', 'Microservices', 'Python',
+          'Architecture', 'System Design', 'Team Leadership',
+          'Docker', 'CI/CD', 'PostgreSQL', 'Neo4j'
+        ].map(tech => (
+          <span class="bg-white border-2 border-black px-4 py-2 hover:bg-black hover:text-white transition-colors cursor-crosshair shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+            {tech}
+          </span>
+        ))}
+      </div>
+    </div>
+
+  </div>
+</Layout>

@@ -1,0 +1,109 @@
+---
+const menuItems = [
+  { label: '/ ABOUT', href: '/about' },
+  { label: '/ GARDEN', href: '/garden' },
+  { label: '/ CONTACT', href: '/contact' },
+];
+---
+
+<header class="w-full border-b-4 border-black bg-white sticky top-0 z-50 flex justify-between items-center px-6 py-4 md:px-10 md:py-6">
+  <a href="/" class="text-xl md:text-2xl font-black uppercase tracking-tighter text-black hover:text-brutal-blue transition-colors no-underline relative z-[70]">
+    EVGENY.ROZANOV
+  </a>
+
+  {/* Desktop Menu */}
+  <nav class="hidden md:block">
+    <ul class="flex gap-x-10 font-black uppercase text-[13px] tracking-widest text-black">
+      {menuItems.map((item) => (
+        <li>
+          <a 
+            href={item.href} 
+            class="transition-colors hover:text-brutal-blue no-underline"
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  {/* Mobile Burger Button */}
+  <button 
+    id="burger-btn"
+    class="md:hidden relative z-[70] w-8 h-6 flex flex-col justify-between group focus:outline-none"
+    aria-label="Toggle menu"
+  >
+    <span class="w-full h-0.5 bg-black transition-all duration-300 origin-left"></span>
+    <span class="w-full h-0.5 bg-black transition-all duration-300 opacity-100"></span>
+    <span class="w-full h-0.5 bg-black transition-all duration-300 origin-left"></span>
+  </button>
+
+  {/* Mobile Menu Overlay */}
+  <div 
+    id="mobile-menu"
+    class="fixed inset-0 bg-white z-[60] flex flex-col justify-center items-center gap-8 transition-transform duration-300 translate-x-full md:hidden"
+  >
+    {menuItems.map((item) => (
+      <a 
+        href={item.href} 
+        class="text-4xl font-black uppercase tracking-tighter text-black hover:text-brutal-blue transition-colors no-underline"
+      >
+        {item.label}
+      </a>
+    ))}
+  </div>
+</header>
+
+<script>
+  function setupMenu() {
+    const btn = document.getElementById('burger-btn');
+    const menu = document.getElementById('mobile-menu');
+    const spans = btn?.querySelectorAll('span');
+    const links = menu?.querySelectorAll('a');
+    let isOpen = false;
+
+    if (!btn || !menu || !spans) return;
+
+    btn.addEventListener('click', () => {
+      isOpen = !isOpen;
+      
+      if (isOpen) {
+        // Open Menu
+        menu.classList.remove('translate-x-full');
+        document.body.style.overflow = 'hidden';
+        
+        // Animate Burger to X
+        spans[0].classList.add('rotate-45');
+        spans[1].classList.add('opacity-0');
+        spans[2].classList.add('-rotate-45');
+      } else {
+        // Close Menu
+        menu.classList.add('translate-x-full');
+        document.body.style.overflow = '';
+        
+        // Reset Burger
+        spans[0].classList.remove('rotate-45');
+        spans[1].classList.remove('opacity-0');
+        spans[2].classList.remove('-rotate-45');
+      }
+    });
+
+    // Close menu when clicking a link
+    links?.forEach(link => {
+      link.addEventListener('click', () => {
+        if (isOpen) {
+           isOpen = false;
+           menu.classList.add('translate-x-full');
+           document.body.style.overflow = '';
+           
+           spans[0].classList.remove('rotate-45');
+           spans[1].classList.remove('opacity-0');
+           spans[2].classList.remove('-rotate-45');
+        }
+      });
+    });
+  }
+
+  // Initialize
+  setupMenu();
+</script>
