@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import DraggableCard from '../components/DraggableCard.tsx';
 import PortraitDeck from '../components/PortraitDeck.tsx';
+import { Mail, Linkedin, Github } from 'lucide-react';
 
 // Data Fetching
 const gardenPosts = (await getCollection('garden')).sort(
@@ -45,8 +46,7 @@ const formatDate = (date) => {
             client:load
             className="w-full h-full shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:shadow-none"
             images={[
-              '/images/nice_2025.jpg',
-              // add images for main page
+              '/images/nice_2025.jpg'
             ]}
           />
         </div>
@@ -67,10 +67,54 @@ const formatDate = (date) => {
           <p class="text-base md:text-lg opacity-80 leading-relaxed">
             As a <span class="font-bold">Technical Project Manager</span>, I build scalable decentralized systems. With <span class="font-bold">12+ years</span> of engineering experience and a deep focus on <span class="font-bold">DeFi & Liquid Staking</span>, I bridge the gap between complex protocol architecture and product reality.
           </p>
-          <div class="flex flex-wrap justify-center md:justify-start gap-4 pt-2 text-sm md:text-base">
-            <a href="mailto:evgeny.rozanov.pro@gmail.com" class="bg-black text-white px-3 py-1 uppercase font-bold hover:bg-brutal-blue transition-colors">Email Me</a>
-            <a href="https://linkedin.com" target="_blank" class="bg-white border-2 border-black text-black px-3 py-1 uppercase font-bold hover:bg-black hover:text-white transition-colors">LinkedIn</a>
-            <a href="https://github.com" target="_blank" class="bg-white border-2 border-black text-black px-3 py-1 uppercase font-bold hover:bg-black hover:text-white transition-colors">GitHub</a>
+          
+          <div class="flex flex-wrap justify-center md:justify-start gap-4 pt-4">
+            
+            {/* Email */}
+            <a 
+              href="mailto:evgeny.rozanov.pro@gmail.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="relative group bg-white p-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex items-center justify-center text-black hover:text-[#d946ef]"
+              aria-label="Email Me"
+            >
+              <Mail size={24} strokeWidth={2.5} />
+              <span class="absolute -top-12 left-1/2 -translate-x-1/2 bg-black text-white text-xs font-bold uppercase px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-[2px_2px_0px_0px_rgba(255,255,255,0.5)] z-50">
+                Email Me
+                <span class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black"></span>
+              </span>
+            </a>
+
+            {/* LinkedIn */}
+            <a 
+              href="https://linkedin.com/in/evgeny-rozanov-8a327236/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="relative group bg-white p-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex items-center justify-center text-black hover:text-[#d946ef]"
+              aria-label="LinkedIn"
+            >
+              <Linkedin size={24} strokeWidth={2.5} />
+              <span class="absolute -top-12 left-1/2 -translate-x-1/2 bg-black text-white text-xs font-bold uppercase px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-[2px_2px_0px_0px_rgba(255,255,255,0.5)] z-50">
+                LinkedIn
+                <span class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black"></span>
+              </span>
+            </a>
+
+            {/* GitHub */}
+            <a 
+              href="https://github.com/erozanov" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="relative group bg-white p-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex items-center justify-center text-black hover:text-[#d946ef]"
+              aria-label="GitHub"
+            >
+              <Github size={24} strokeWidth={2.5} />
+              <span class="absolute -top-12 left-1/2 -translate-x-1/2 bg-black text-white text-xs font-bold uppercase px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-[2px_2px_0px_0px_rgba(255,255,255,0.5)] z-50">
+                GitHub
+                <span class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black"></span>
+              </span>
+            </a>
+
           </div>
         </div>
       </div>

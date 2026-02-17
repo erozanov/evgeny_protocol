@@ -6,10 +6,10 @@ export default {
 			colors: {
 				black: '#000',
 				white: '#fff',
-				'brutal-red': '#ff3e00',
+				'brutal-red': '#E63E8D',
 				'brutal-blue': '#00a3ff',
-				'brutal-green': '#1aff00',
-				'brutal-yellow': '#fff500',
+				'brutal-green': '#1F8D3D',
+				'brutal-yellow': '#F2C100',
 			},
 			fontFamily: {
 				sans: ['system-ui', 'sans-serif'],

@@ -1,24 +1,24 @@
 ---
 const menuItems = [
-  { label: '/ ABOUT', href: '/about' },
-  { label: '/ GARDEN', href: '/garden' },
-  { label: '/ CONTACT', href: '/contact' },
+  { label: '/ ABOUT', href: '/about', color: 'hover:bg-brutal-red' },
+  { label: '/ GARDEN', href: '/garden', color: 'hover:bg-brutal-green' },
+  { label: '/ CONTACT', href: '/contact', color: 'hover:bg-brutal-yellow' },
 ];
 ---
 
 <header class="w-full border-b-4 border-black bg-white sticky top-0 z-50 flex justify-between items-center px-6 py-4 md:px-10 md:py-6">
-  <a href="/" class="text-xl md:text-2xl font-black uppercase tracking-tighter text-black hover:text-brutal-blue transition-colors no-underline relative z-[70]">
+  <a href="/" class="text-xl md:text-2xl font-black uppercase tracking-tighter text-black hover:opacity-70 transition-all px-2 -ml-2 no-underline relative z-[70]">
     EVGENY.ROZANOV
   </a>
 
   {/* Desktop Menu */}
   <nav class="hidden md:block">
-    <ul class="flex gap-x-10 font-black uppercase text-[13px] tracking-widest text-black">
+    <ul class="flex gap-x-2 font-black uppercase text-[13px] tracking-widest text-black">
       {menuItems.map((item) => (
         <li>
           <a 
             href={item.href} 
-            class="transition-colors hover:text-brutal-blue no-underline"
+            class={`px-4 py-2 transition-all no-underline hover:text-white ${item.color}`}
           >
             {item.label}
           </a>
@@ -41,12 +41,12 @@ const menuItems = [
   {/* Mobile Menu Overlay */}
   <div 
     id="mobile-menu"
-    class="fixed inset-0 bg-white z-[60] flex flex-col justify-center items-center gap-8 transition-transform duration-300 translate-x-full md:hidden"
+    class="fixed inset-0 bg-white z-[60] flex flex-col justify-center items-center gap-4 transition-transform duration-300 translate-x-full md:hidden"
   >
     {menuItems.map((item) => (
       <a 
         href={item.href} 
-        class="text-4xl font-black uppercase tracking-tighter text-black hover:text-brutal-blue transition-colors no-underline"
+        class={`text-4xl font-black uppercase tracking-tighter text-black px-6 py-2 transition-all no-underline hover:text-white ${item.color}`}
       >
         {item.label}
       </a>
@@ -68,34 +68,26 @@ const menuItems = [
       isOpen = !isOpen;
       
       if (isOpen) {
-        // Open Menu
         menu.classList.remove('translate-x-full');
         document.body.style.overflow = 'hidden';
-        
-        // Animate Burger to X
         spans[0].classList.add('rotate-45');
         spans[1].classList.add('opacity-0');
         spans[2].classList.add('-rotate-45');
       } else {
-        // Close Menu
         menu.classList.add('translate-x-full');
         document.body.style.overflow = '';
-        
-        // Reset Burger
         spans[0].classList.remove('rotate-45');
         spans[1].classList.remove('opacity-0');
         spans[2].classList.remove('-rotate-45');
       }
     });
 
-    // Close menu when clicking a link
     links?.forEach(link => {
       link.addEventListener('click', () => {
         if (isOpen) {
            isOpen = false;
            menu.classList.add('translate-x-full');
            document.body.style.overflow = '';
-           
            spans[0].classList.remove('rotate-45');
            spans[1].classList.remove('opacity-0');
            spans[2].classList.remove('-rotate-45');
@@ -104,6 +96,5 @@ const menuItems = [
     });
   }
 
-  // Initialize
   setupMenu();
 </script>
