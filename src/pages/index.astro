@@ -72,10 +72,19 @@ const formatDate = (date) => {
         </div>
       </div>
     </div>
+
+    {/* Scroll Down Arrow */}
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:block animate-bounce z-20">
+      <a href="#professional-track" class="text-black hover:text-[#d946ef] transition-colors" aria-label="Scroll Down">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter">
+          <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
+        </svg>
+      </a>
+    </div>
   </section>
 
   {/* --- PROJECTS & WORK: SEMI-STATIC GRID --- */}
-  <section class="w-full bg-gray-50 border-b-4 border-black px-4 py-12 md:py-16">
+  <section id="professional-track" class="w-full bg-gray-50 border-b-4 border-black px-4 py-12 md:py-16">
     <div class="max-w-6xl mx-auto">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-12 border-b-4 border-black pb-4 gap-4">
         <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tight">Professional Track</h2>
