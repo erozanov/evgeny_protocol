@@ -73,10 +73,13 @@ const formatDate = (date) => {
       </div>
     </div>
 
-    {/* Scroll Down Arrow */}
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:block animate-bounce z-20">
-      <a href="#contact" class="text-black hover:text-[#d946ef] transition-colors" aria-label="Scroll Down">
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter">
+    {/* Scroll Down Arrow with Label */}
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 z-20">
+      <span class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 select-none">
+        Contact Me
+      </span>
+      <a href="#contact" class="text-black hover:text-[#d946ef] transition-colors animate-bounce" aria-label="Scroll Down to Contacts">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter">
           <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
         </svg>
       </a>

@@ -12,28 +12,99 @@ export async function getStaticPaths() {
 
 const post = Astro.props;
 const { Content } = await post.render();
+
+// --- BACKLINKS LOGIC ---
+const allPosts = await getCollection('garden');
+const backlinks = allPosts.filter(p => {
+  // Don't link to itself
+  if (p.slug === post.slug) return false;
+  
+  // Search for the current slug in the raw markdown body
+  // Matches [[slug]] or [[slug|alias]]
+  const wikiLinkRegex = new RegExp(`\\[\\[${post.slug}(\\||\\b)`, 'i');
+  return wikiLinkRegex.test(p.body || '');
+});
+
+const formatDate = (date) => {
+  return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
+};
 ---
 
 <Layout title={post.data.title}>
-  <main class="min-h-screen p-4 md:p-12 font-mono">
-    <div class="max-w-3xl mx-auto bg-white border-4 border-black p-8 shadow-brutal relative">
-      <a href="/" class="absolute -top-6 -left-6 bg-black text-white px-4 py-2 uppercase font-bold border-2 border-white hover:bg-white hover:text-black hover:border-black transition-colors transform hover:-translate-y-1 hover:-translate-x-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
-        &lt;- Back to Garden
-      </a>
+  <main class="min-h-screen p-4 md:p-12 font-mono bg-[#fdfdfb]">
+    <div class="max-w-3xl mx-auto">
       
-      <article class="prose prose-brutal max-w-none">
-        <h1 class="text-4xl md:text-6xl font-black uppercase mb-4 border-b-4 border-black pb-4">{post.data.title}</h1>
-        {post.data.tags && (
-          <div class="flex gap-2 mb-8 flex-wrap">
-            {post.data.tags.map((tag) => (
-              <span class="bg-black text-white px-2 py-1 text-xs uppercase font-bold">#{tag}</span>
-            ))}
-          </div>
-        )}
-        <div class="content">
+      {/* Navigation */}
+      <div class="mb-12">
+        <a href="/garden" class="inline-block bg-black text-white px-4 py-2 uppercase font-bold text-sm border-2 border-black hover:bg-white hover:text-black transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <- Back to Garden
+        </a>
+      </div>
+
+      {/* Main Content Card */}
+      <article class="bg-white border-4 border-black p-8 md:p-12 shadow-brutal mb-16">
+        <div class="flex flex-col md:flex-row md:items-baseline gap-4 mb-6 border-b-2 border-black/10 pb-4">
+           {post.data.pubDate && (
+             <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">
+               {formatDate(post.data.pubDate)}
+             </span>
+           )}
+           {post.data.tags && (
+             <div class="flex gap-2 flex-wrap">
+               {post.data.tags.map((tag) => (
+                 <span class="text-[10px] bg-gray-100 text-gray-600 px-1.5 py-0.5 uppercase font-bold border border-gray-200">#{tag}</span>
+               ))}
+             </div>
+           )}
+        </div>
+
+        <header class="mb-12">
+          <h1 class="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-[0.9] mb-4">
+            {post.data.title}
+          </h1>
+          {post.data.description && (
+            <p class="text-xl opacity-60 font-medium leading-relaxed italic">
+              {post.data.description}
+            </p>
+          )}
+        </header>
+        
+        <div class="content prose prose-brutal max-w-none">
           <Content />
         </div>
       </article>
+
+      {/* Backlinks Section */}
+      {backlinks.length > 0 && (
+        <section class="mt-20 border-t-4 border-black pt-12">
+          <h2 class="text-2xl font-black uppercase mb-8 flex items-center gap-3">
+            <span class="bg-[#1F8D3D] text-white px-2 py-1 text-sm">CONNECTED</span>
+            Linked Mentions
+          </h2>
+          
+          <div class="grid gap-6">
+            {backlinks.map(link => (
+              <a href={`/garden/${link.slug}`} class="group block bg-white border-2 border-black p-6 hover:bg-[#1F8D3D] hover:text-white transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1">
+                <div class="flex justify-between items-start mb-2">
+                  <h3 class="font-bold text-xl uppercase tracking-tight leading-none">{link.data.title}</h3>
+                  <span class="text-[10px] font-mono opacity-50 group-hover:opacity-100">/MENTION</span>
+                </div>
+                <p class="text-sm opacity-70 group-hover:opacity-100 line-clamp-2">
+                  {link.data.description}
+                </p>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Empty State / Footer */}
+      <footer class="mt-24 pb-12 text-center">
+        <div class="inline-block border-2 border-black px-4 py-2 text-xs font-bold uppercase tracking-widest text-gray-400">
+          End of Note // Reference: {post.slug}
+        </div>
+      </footer>
+
     </div>
   </main>
 </Layout>
@@ -41,32 +112,48 @@ const { Content } = await post.render();
 <style is:global>
   /* Obsidian Callout Styles */
   .callout {
-    @apply border-l-4 border-black bg-gray-100 p-4 my-4;
+    @apply border-l-4 border-black bg-gray-50 p-6 my-8 font-mono;
   }
   .callout-title {
-    @apply font-bold uppercase mb-2 flex items-center gap-2;
+    @apply font-black uppercase mb-3 flex items-center gap-2 text-sm tracking-tighter;
   }
   
   /* Markdown Styles */
   .content h1, .content h2, .content h3 {
-    @apply font-bold uppercase mt-8 mb-4;
+    @apply font-black uppercase mt-12 mb-6 tracking-tighter leading-none;
   }
+  .content h2 { @apply text-3xl md:text-4xl border-b-2 border-black pb-2; }
+  .content h3 { @apply text-2xl; }
+
   .content p {
-    @apply mb-4 leading-relaxed;
+    @apply mb-6 text-lg leading-relaxed opacity-90;
   }
   .content ul {
-    @apply list-disc list-inside mb-4;
+    @apply list-none mb-8 space-y-3;
   }
+  .content ul li {
+    @apply relative pl-6;
+  }
+  .content ul li::before {
+    content: "->";
+    @apply absolute left-0 font-bold text-[#1F8D3D];
+  }
+
   .content a {
-    @apply underline decoration-2 decoration-brutal-blue hover:text-brutal-blue transition-colors font-bold;
+    @apply underline decoration-2 decoration-[#1F8D3D] hover:bg-[#1F8D3D] hover:text-white transition-all font-bold px-0.5;
   }
   .content blockquote {
-    @apply border-l-4 border-black pl-4 italic bg-yellow-100 p-2 my-4;
+    @apply border-l-8 border-black pl-6 py-2 italic bg-gray-50 my-8 text-xl;
   }
   .content code {
-    @apply bg-gray-200 px-1 font-mono text-sm border border-black;
+    @apply bg-gray-100 px-1.5 py-0.5 font-mono text-sm border border-black/10 rounded-sm;
   }
   .content pre {
-    @apply bg-black text-white p-4 border-2 border-gray-500 overflow-x-auto my-4 shadow-brutal-sm;
+    @apply bg-black text-white p-6 border-4 border-black overflow-x-auto my-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.2)];
+  }
+  
+  /* Wiki-link specific styling */
+  .content .internal.new {
+    @apply text-red-500 line-through decoration-red-500;
   }
 </style>
