@@ -134,57 +134,57 @@ const formatDate = (date) => {
     </div>
 
     <div class="absolute inset-0" id="garden-workspace">
-      {/* Instruction Card - Hidden on very small screens if needed, or scaled */}
+      {/* Enhanced WIP System Card */}
       <DraggableCard
         client:load
-        title="SYSTEM"
-        className="top-[10%] right-[5%] md:right-[10%] bg-brutal-yellow w-48 md:w-56 z-30 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+        title="PROTOCOL: GARDEN"
+        className="top-[35%] left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black text-white w-80 z-30 shadow-[12px_12px_0px_0px_rgba(217,70,239,0.3)] border-[#d946ef]"
         dragConstraints={{ left: -1000, right: 1000, top: -500, bottom: 500 }}
       >
-        <p class="font-mono text-xs md:text-sm font-bold uppercase">
-          This is a chaotic space.<br/>
-          Drag cards to explore thoughts, notes, and experiments.
-        </p>
+        <div class="space-y-4 p-2">
+          <p class="font-mono text-sm font-bold uppercase leading-relaxed text-[#d946ef] animate-pulse">
+            [ STATUS: GROWING ]
+          </p>
+          <p class="font-mono text-xs opacity-70">
+            The Digital Garden is currently being seeded with architectural notes, protocol experiments, and mental models.
+          </p>
+          <div class="pt-2 border-t border-white/20 flex justify-between items-center text-[10px] uppercase font-black tracking-widest">
+             <span>v.0.1.beta</span>
+             <span>Locked</span>
+          </div>
+        </div>
       </DraggableCard>
 
-      {/* Garden Notes */}
-      {gardenPosts.map((post, index) => {
-        const pos = getPosition(post.data.title, index + 200);
-        return (
-          <DraggableCard
-            client:load
-            title="NOTE"
-            style={pos}
-            className="bg-white w-56 md:w-64 z-20 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:z-50"
-            dragConstraints={{ left: -1000, right: 1000, top: -500, bottom: 500 }}
-          >
-            <h4 class="font-bold text-sm md:text-base uppercase mb-2 decoration-brutal-blue underline decoration-2">{post.data.title}</h4>
-            <p class="mb-4 text-xs line-clamp-3 text-gray-600 font-mono">{post.data.description}</p>
-            <a href={`/garden/${post.slug}`} class="text-xs uppercase font-bold hover:bg-brutal-blue hover:text-white px-1 -ml-1 transition-colors inline-block">
-              Read Note ->
-            </a>
-          </DraggableCard>
-        );
-      })}
+      {/* Abstract Seedling Cards for visual density */}
+      <DraggableCard
+        client:load
+        title="NODE_01"
+        style={{ top: '20%', left: '15%', rotate: '-4deg' }}
+        className="bg-white/50 backdrop-blur-sm border-gray-200 w-48 z-10"
+        dragConstraints={{ left: -1000, right: 1000, top: -500, bottom: 500 }}
+      >
+        <div class="h-24 flex items-center justify-center border-2 border-dashed border-gray-200 text-gray-300 font-black text-4xl">?</div>
+      </DraggableCard>
 
-      {/* Portfolio Items mixed in for discovery */}
-      {portfolioItems.map((post, index) => {
-        const pos = getPosition(post.data.title, index + 500);
-        return (
-          <DraggableCard 
-            client:load 
-            title="PROJECT" 
-            style={pos}
-            className="bg-gray-900 text-white w-48 md:w-56 z-20 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] border-white"
-            dragConstraints={{ left: -1000, right: 1000, top: -500, bottom: 500 }}
-          >
-            <h4 class="font-black text-sm md:text-lg uppercase mb-2 text-brutal-yellow">{post.data.title}</h4>
-            <a href={post.data.link} target="_blank" class="block text-center uppercase font-bold text-xs border border-white hover:bg-white hover:text-black transition-colors py-1">
-              View ->
-            </a>
-          </DraggableCard>
-        );
-      })}
+      <DraggableCard
+        client:load
+        title="NODE_02"
+        style={{ top: '60%', left: '75%', rotate: '6deg' }}
+        className="bg-white/50 backdrop-blur-sm border-gray-200 w-48 z-10"
+        dragConstraints={{ left: -1000, right: 1000, top: -500, bottom: 500 }}
+      >
+        <div class="h-24 flex items-center justify-center border-2 border-dashed border-gray-200 text-gray-300 font-black text-4xl">?</div>
+      </DraggableCard>
+
+      <DraggableCard
+        client:load
+        title="NODE_03"
+        style={{ top: '15%', left: '70%', rotate: '2deg' }}
+        className="bg-white/50 backdrop-blur-sm border-gray-200 w-48 z-10"
+        dragConstraints={{ left: -1000, right: 1000, top: -500, bottom: 500 }}
+      >
+        <div class="h-24 flex items-center justify-center border-2 border-dashed border-gray-200 text-gray-300 font-black text-4xl">?</div>
+      </DraggableCard>
 
     </div>
   </section>
