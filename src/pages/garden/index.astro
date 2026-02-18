@@ -6,8 +6,21 @@ const posts = (await getCollection('garden')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 
+// Get unique tags
+const allTags = [...new Set(posts.flatMap(post => post.data.tags || []))].sort();
+
+// Group posts by year
+const postsByYear = posts.reduce((acc, post) => {
+  const year = post.data.pubDate.getFullYear();
+  if (!acc[year]) acc[year] = [];
+  acc[year].push(post);
+  return acc;
+}, {});
+
+const years = Object.keys(postsByYear).sort((a, b) => b - a);
+
 const formatDate = (date) => {
-  return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
+  return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase();
 };
 ---
 
@@ -29,44 +42,160 @@ const formatDate = (date) => {
           {posts.length} NODES LOADED
         </div>
       </div>
+
+      {/* Search & Filter Controls */}
+      <div class="mt-8 flex flex-col gap-6">
+        {/* Search Input */}
+        <div class="relative">
+          <input 
+            type="text" 
+            id="search-input" 
+            placeholder="SEARCH NODES..." 
+            class="w-full bg-gray-100 border-2 border-black p-3 font-bold uppercase placeholder-gray-400 focus:outline-none focus:bg-white focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
+          />
+        </div>
+
+        {/* Tags Cloud */}
+        <div class="flex flex-wrap gap-2" id="tags-container">
+          <button 
+            class="tag-filter active text-xs font-bold uppercase border-2 border-black px-3 py-1 bg-black text-white hover:bg-brutal-blue hover:text-white hover:border-black transition-colors"
+            data-tag="all"
+          >
+            ALL
+          </button>
+          {allTags.map(tag => (
+            <button 
+              class="tag-filter text-xs font-bold uppercase border-2 border-gray-300 px-3 py-1 text-gray-500 hover:border-black hover:text-black transition-colors"
+              data-tag={tag}
+            >
+              #{tag}
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
 
-    {/* Notes List */}
-    <div class="space-y-12">
-      {posts.map((post) => (
-        <article class="group relative block border-l-4 border-gray-200 pl-6 hover:border-black transition-colors duration-300">
-          <a href={`/garden/${post.slug}`} class="absolute inset-0 z-10"></a>
-          
-          <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-6 mb-2">
-            <span class="text-xs font-bold uppercase text-gray-400 group-hover:text-black transition-colors">
-              {formatDate(post.data.pubDate)}
-            </span>
-            {post.data.tags && (
-              <div class="flex gap-2">
-                {post.data.tags.map(tag => (
-                  <span class="text-[10px] uppercase font-bold border border-gray-300 px-1 text-gray-500 group-hover:border-black group-hover:text-black transition-colors">
-                    #{tag}
+    {/* Notes List by Year */}
+    <div id="posts-container" class="space-y-16">
+      {years.map(year => (
+        <div class="year-group" data-year={year}>
+          <h2 class="text-4xl font-black text-gray-200 mb-8 select-none">{year}</h2>
+          <div class="space-y-12">
+            {postsByYear[year].map((post) => (
+              <article 
+                class="post-item group relative block border-l-4 border-gray-200 pl-6 hover:border-black transition-colors duration-300"
+                data-title={post.data.title.toLowerCase()}
+                data-tags={post.data.tags?.join(',')}
+              >
+                <a href={`/garden/${post.slug}`} class="absolute inset-0 z-10"></a>
+                
+                <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-6 mb-2">
+                  <span class="text-xs font-bold uppercase text-gray-400 group-hover:text-black transition-colors">
+                    {formatDate(post.data.pubDate)}
                   </span>
-                ))}
-              </div>
-            )}
+                  {post.data.tags && (
+                    <div class="flex gap-2">
+                      {post.data.tags.map(tag => (
+                        <span class="text-[10px] uppercase font-bold border border-gray-300 px-1 text-gray-500 group-hover:border-black group-hover:text-black transition-colors">
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <h3 class="text-3xl md:text-4xl font-black uppercase tracking-tight mb-3 group-hover:text-[#1F8D3D] transition-colors decoration-2 underline-offset-4">
+                  {post.data.title}
+                </h3>
+
+                <p class="text-base md:text-lg opacity-70 leading-relaxed line-clamp-3 max-w-2xl group-hover:opacity-100 transition-opacity">
+                  {post.data.description}
+                </p>
+
+                <div class="mt-4 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0 duration-300 flex items-center gap-2 font-bold text-xs uppercase">
+                  <span class="bg-black text-white px-2 py-1">Read Note</span>
+                  <span>-></span>
+                </div>
+              </article>
+            ))}
           </div>
-
-          <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tight mb-3 group-hover:text-[#1F8D3D] transition-colors decoration-2 underline-offset-4">
-            {post.data.title}
-          </h2>
-
-          <p class="text-base md:text-lg opacity-70 leading-relaxed line-clamp-3 max-w-2xl group-hover:opacity-100 transition-opacity">
-            {post.data.description}
-          </p>
-
-          <div class="mt-4 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0 duration-300 flex items-center gap-2 font-bold text-xs uppercase">
-            <span class="bg-black text-white px-2 py-1">Read Note</span>
-            <span>-></span>
-          </div>
-        </article>
+        </div>
       ))}
+      
+      {/* No Results Message */}
+      <div id="no-results" class="hidden text-center py-20 text-xl font-bold uppercase text-gray-400">
+        No nodes found.
+      </div>
     </div>
 
   </div>
 </Layout>
+
+<script>
+  const searchInput = document.getElementById('search-input');
+  const tagButtons = document.querySelectorAll('.tag-filter');
+  const posts = document.querySelectorAll('.post-item');
+  const yearGroups = document.querySelectorAll('.year-group');
+  const noResultsMsg = document.getElementById('no-results');
+
+  let currentTag = 'all';
+  let currentSearch = '';
+
+  function filterPosts() {
+    let visibleCount = 0;
+
+    posts.forEach(post => {
+      const title = post.dataset.title;
+      const tags = post.dataset.tags ? post.dataset.tags.split(',') : [];
+      
+      const matchesSearch = title.includes(currentSearch);
+      const matchesTag = currentTag === 'all' || tags.includes(currentTag);
+
+      if (matchesSearch && matchesTag) {
+        post.classList.remove('hidden');
+        visibleCount++;
+      } else {
+        post.classList.add('hidden');
+      }
+    });
+
+    // Hide empty years
+    yearGroups.forEach(group => {
+      const visiblePostsInYear = group.querySelectorAll('.post-item:not(.hidden)').length;
+      if (visiblePostsInYear === 0) {
+        group.classList.add('hidden');
+      } else {
+        group.classList.remove('hidden');
+      }
+    });
+
+    // Show no results message
+    if (visibleCount === 0) {
+      noResultsMsg.classList.remove('hidden');
+    } else {
+      noResultsMsg.classList.add('hidden');
+    }
+  }
+
+  // Search Event
+  searchInput?.addEventListener('input', (e) => {
+    currentSearch = e.target.value.toLowerCase();
+    filterPosts();
+  });
+
+  // Tag Click Event
+  tagButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Toggle active styling
+      tagButtons.forEach(b => {
+        b.classList.remove('bg-black', 'text-white', 'border-black');
+        b.classList.add('border-gray-300', 'text-gray-500');
+      });
+      btn.classList.remove('border-gray-300', 'text-gray-500');
+      btn.classList.add('bg-black', 'text-white', 'border-black');
+
+      currentTag = btn.dataset.tag;
+      filterPosts();
+    });
+  });
+</script>
